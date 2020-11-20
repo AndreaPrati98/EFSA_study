@@ -16,3 +16,5 @@ with error bars reflecting error size on response measurements.
 endpoints using gender as categorical variable.
 3. Use subset selection to estimate a unique model using gender and
 endpoint as categorical variables.
+4. In points 2. and 3., heteroscedasticity of the data should be taken
+into account.
