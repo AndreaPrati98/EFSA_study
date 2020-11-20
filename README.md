@@ -9,3 +9,10 @@ animal 90 days after the beginning of the experiment. Information on the animals
 experiment as well as summary information (mean and standard deviation, SD for each group of
 animals) on the endpoints measured at the end of the experiment is provided in table 2. It is
 requested to propose an appropriate statistical model and to analyse these data.
+
+1. Plot dose-response data for each pair endpoint-gender (6 plots)
+with error bars reflecting error size on response measurements.
+2. Use subset selection to estimate separate models for the 3
+endpoints using gender as categorical variable.
+3. Use subset selection to estimate a unique model using gender and
+endpoint as categorical variables.
