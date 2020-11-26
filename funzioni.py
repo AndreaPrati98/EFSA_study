@@ -1,7 +1,18 @@
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import scipy
+import sklearn
+import seaborn as sns
+import xlrd
+import time
+import statsmodels.api as sm
+
 def CarloCrecco():
     print("Cuina!")
     
-def processSubset(X,feature_set,weights):
+def processSubset(y,X,feature_set,weights):
+    import time
     # Fit model on feature_set and calculate RSS
     #model = sm.OLS(y,X[list(feature_set)])
     model = sm.WLS(y,X[list(feature_set)], weigths = 1. /weights ** 2)
@@ -11,7 +22,7 @@ def processSubset(X,feature_set,weights):
     number_of_predictors = len(feature_set)
     return {"model":regr, "RSS":RSS, "number_of_predictors": number_of_predictors}
 
-def forward(X,predictors,weights):
+def forward(y,X,predictors,weights):
 
     # Pull out predictors we still need to process
     remaining_predictors = [p for p in X.columns if p not in predictors]
@@ -21,7 +32,7 @@ def forward(X,predictors,weights):
     results = []
     
     for p in remaining_predictors:
-        results.append(processSubset(X,predictors+[p],weights))
+        results.append(processSubset(y,X,predictors+[p],weights))
     
     # Wrap everything up in a nice dataframe
     models = pd.DataFrame(results)
