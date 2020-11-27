@@ -11,7 +11,7 @@ import statsmodels.api as sm
 def CarloCrecco():
     print("Cuindknpjbjfenjja!")
     
-def processSubset(y,X,feature_set,weights):
+def processSubset(y, X, feature_set, weights):
     import time
     # Fit model on feature_set and calculate RSS
     #model = sm.OLS(y,X[list(feature_set)])
@@ -22,7 +22,7 @@ def processSubset(y,X,feature_set,weights):
     number_of_predictors = len(feature_set)
     return {"model":regr, "RSS":RSS, "number_of_predictors": number_of_predictors, "name_of_predictors ": list(feature_set)}
 
-def forward(y,X,predictors,weights):
+def forward(y, X, predictors, weights, yesPrint):
 
     # Pull out predictors we still need to process
     remaining_predictors = [p for p in X.columns if p not in predictors]
@@ -36,8 +36,8 @@ def forward(y,X,predictors,weights):
     
     # Wrap everything up in a nice dataframe
     models = pd.DataFrame(results)
-    display(models)
-    #print()
+    if yesPrint:
+        display(models)
     
     # Choose the model with the highest RSS
     best_model = models.loc[models['RSS'].argmin()]
@@ -49,16 +49,15 @@ def forward(y,X,predictors,weights):
     return best_model
 
 # Funzione per calcolare 
-def mainForward(X, Y, weights):
-    models_fwd = pd.DataFrame(columns=["RSS", "model"])
+def mainForward(X, Y, weights, yesPrint = False):
+    models_fwd = pd.DataFrame(columns=["RSS", "model", "number_of_predictors", "name_of_predictors "])
 
     tic = time.time()
     predictors = []
 
     for i in range(1,len(X.columns)+1):    
-        models_fwd.loc[i] = forward(Y, X, predictors, weights)
+        models_fwd.loc[i] = forward(Y, X, predictors, weights, yesPrint)
         predictors = models_fwd.loc[i]["model"].model.exog_names
-        display(predictors)
 
     toc = time.time()
     print("Total elapsed time:", (toc-tic), "seconds.")
