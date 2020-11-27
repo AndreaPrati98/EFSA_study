@@ -62,3 +62,12 @@ def mainForward(X, Y, weights, yesPrint = False):
     toc = time.time()
     print("Total elapsed time:", (toc-tic), "seconds.")
     return models_fwd
+
+def compute_criteria(group_of_models):
+    for i in range(1, group_of_models.shape[0]+1):
+        model = group_of_models.loc[i,"model"]
+        group_of_models.loc[i,"aic"] = model.aic
+        group_of_models.loc[i,"bic"] = model.bic
+        group_of_models.loc[i,"mse"] = model.mse_total
+        group_of_models.loc[i,"adj_rsquare"] = model.rsquared_adj
+    return group_of_models
