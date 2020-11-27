@@ -9,7 +9,7 @@ import time
 import statsmodels.api as sm
 
 def CarloCrecco():
-    print("Cuina!")
+    print("Cuindknpjbjfenjja!")
     
 def processSubset(y,X,feature_set,weights):
     import time
@@ -20,7 +20,7 @@ def processSubset(y,X,feature_set,weights):
     regr = model.fit()
     RSS = ((regr.predict(X[list(feature_set)]) - y) ** 2).sum()
     number_of_predictors = len(feature_set)
-    return {"model":regr, "RSS":RSS, "number_of_predictors": number_of_predictors}
+    return {"model":regr, "RSS":RSS, "number_of_predictors": number_of_predictors, "name_of_predictors ": list(feature_set)}
 
 def forward(y,X,predictors,weights):
 
@@ -47,3 +47,19 @@ def forward(y,X,predictors,weights):
     
     # Return the best model, along with some other useful information about the model
     return best_model
+
+# Funzione per calcolare 
+def mainForward(X, Y, weights):
+    models_fwd = pd.DataFrame(columns=["RSS", "model"])
+
+    tic = time.time()
+    predictors = []
+
+    for i in range(1,len(X.columns)+1):    
+        models_fwd.loc[i] = forward(Y, X, predictors, weights)
+        predictors = models_fwd.loc[i]["model"].model.exog_names
+        display(predictors)
+
+    toc = time.time()
+    print("Total elapsed time:", (toc-tic), "seconds.")
+    return models_fwd
