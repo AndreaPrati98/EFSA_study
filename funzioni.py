@@ -18,9 +18,10 @@ def processSubset(y, X, feature_set, weights):
     model = sm.WLS(y,X[list(feature_set)], weigths = 1. /weights ** 2)
     #model = sm.GLS(y,X[list(feature_set)], sigma = weights**2.0)
     regr = model.fit()
-    RSS = ((regr.predict(X[list(feature_set)]) - y) ** 2).sum()
+    Y_pred=regr.predict(X[list(feature_set)])
+    RSS = ((Y_pred - y) ** 2).sum()
     number_of_predictors = len(feature_set)
-    return {"model":regr, "RSS":RSS, "number_of_predictors": number_of_predictors, "name_of_predictors ": list(feature_set)}
+    return {"model":regr, "RSS":RSS, "number_of_predictors": number_of_predictors, "name_of_predictors": list(feature_set),"Y_pred":Y_pred}
 
 def forward(y, X, predictors, weights, yesPrint):
 
@@ -50,7 +51,7 @@ def forward(y, X, predictors, weights, yesPrint):
 
 # Funzione per calcolare 
 def mainForward(X, Y, weights, yesPrint = False):
-    models_fwd = pd.DataFrame(columns=["RSS", "model", "number_of_predictors", "name_of_predictors "])
+    models_fwd = pd.DataFrame(columns=["RSS", "model", "number_of_predictors", "name_of_predictors","Y_pred"])
 
     tic = time.time()
     predictors = []
