@@ -98,7 +98,7 @@ def mainBackward(X, Y, weights, yesPrint = False):
     predictors = X.columns
     
     while(len(predictors) > 1):
-        offset = len(predictors)
+        offset = len(predictors)-1
         models_bwd.loc[offset] = backward(Y, X, predictors, weights, yesPrint)
         predictors = models_bwd.loc[offset]["model"].model.exog_names
 
