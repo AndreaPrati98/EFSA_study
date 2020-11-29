@@ -16,7 +16,7 @@ def processSubset(y, X, feature_set, weights):
     import time
     # Fit model on feature_set and calculate RSS
     #model = sm.OLS(y,X[list(feature_set)])
-    model = sm.WLS(y,X[list(feature_set)], weigths = 1. /weights ** 2)
+    model = sm.WLS(y,X[list(feature_set)], weigths = 1. /(weights ** 2))
     #model = sm.GLS(y,X[list(feature_set)], sigma = weights**2.0)
     regr = model.fit()
     Y_pred=regr.predict(X[list(feature_set)])
@@ -114,3 +114,15 @@ def compute_criteria(group_of_models):
         group_of_models.loc[i,"mse"] = model.mse_total
         group_of_models.loc[i,"adj_rsquare"] = model.rsquared_adj
     return group_of_models
+
+
+
+#GRAFICIC
+
+def plot_response_over_prediction(response, prediction):
+    df = pd.DataFrame({'response':response, 'prediction':prediction,"diff": abs(response-prediction)})
+    ax1 = df.reset_index().plot(kind='scatter', x='index', y='response', color='r',figsize=(15,10))    
+    ax2 = df.reset_index().plot(x='index', y='prediction', color='b', ax=ax1,figsize=(15,10)) 
+    ax3 = df.reset_index().plot(x='index', y='diff', color='g', ax=ax1,figsize=(15,10))
+    return;
+    
