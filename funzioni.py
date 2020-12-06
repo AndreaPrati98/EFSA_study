@@ -126,3 +126,37 @@ def plot_response_over_prediction(response, prediction):
     ax3 = df.reset_index().plot(x='index', y='diff', color='g', ax=ax1,figsize=(15,10))
     return;
     
+def selectBestForEachCriteria(models_fwd, criteriaToMin, criteriaToMax):
+    dict_results_best_models = {}
+    
+    for criteria in criteriaToMin:
+        print("The criteria is: " + criteria)
+        row = models_fwd.loc[models_fwd[criteria].argmin()]
+        modelFeatures = row["model"].model.exog_names
+        if "intercept" not in modelFeatures:
+            modelFeatures.append("intercept")
+        criteriaValue = row[criteria]
+        degressOfFreedom = row["model"].model.df_model
+        print("Features: "+str(modelFeatures))
+        print("Criteria value: "+str(criteriaValue))
+        print("Degrees of freedom: "+str(degressOfFreedom+1))
+        print()
+        dict_results_best_models[criteria] = row
+        
+    for criteria in criteriaToMax:
+        print("The criteria is: " + criteria)
+        row = models_fwd.loc[models_fwd[criteria].argmax()]
+        modelFeatures = row["model"].model.exog_names
+        if "intercept" not in modelFeatures:
+            modelFeatures.append("intercept")
+        criteriaValue = row[criteria]
+        degressOfFreedom = row["model"].model.df_model
+        print("Features: "+str(modelFeatures))
+        print("Criteria value: "+str(criteriaValue))
+        print("Degrees of freedom: "+str(degressOfFreedom+1))
+        print()
+        dict_results_best_models[criteria] = row
+        
+    best_models = pd.DataFrame(dict_results_best_models).T
+
+    return best_models
