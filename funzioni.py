@@ -10,14 +10,12 @@ import statsmodels.api as sm
 import itertools
 
 def CarloCrecco():
-    print("Cuindknpjbjfenjja!")
+    print("Cucinaaa!")
     
 def processSubset(y, X, feature_set, weights):    
     import time
     # Fit model on feature_set and calculate RSS
-    #model = sm.OLS(y,X[list(feature_set)])
     model = sm.WLS(y,X[list(feature_set)], weigths = 1. /(weights ** 2))
-    #model = sm.GLS(y,X[list(feature_set)], sigma = weights**2.0)
     regr = model.fit()
     Y_pred=regr.predict(X[list(feature_set)])
     RSS = ((Y_pred - y) ** 2).sum()
@@ -38,14 +36,14 @@ def forward(y, X, predictors, weights, yesPrint):
     
     # Wrap everything up in a nice dataframe
     models = pd.DataFrame(results)
-    if yesPrint:
-        display(models)
     
     # Choose the model with the highest RSS
     best_model = models.loc[models['RSS'].argmin()]
     
     toc = time.time()
-    print("Processed ", models.shape[0], "models on", len(predictors)+1, "predictors in", (toc-tic), "seconds.")
+    if yesPrint:
+        display(models)
+        print("Processed ", models.shape[0], "models on", len(predictors)+1, "predictors in", (toc-tic), "seconds.")
     
     # Return the best model, along with some other useful information about the model
     return best_model
@@ -64,14 +62,14 @@ def backward(Y, X, predictors, weights, yesPrint):
     
     # Wrap everything up in a nice dataframe
     models = pd.DataFrame(results)
-    if yesPrint:
-        display(models)
     
     # Choose the model with the highest RSS
     best_model = models.loc[models['RSS'].argmin()]
     
     toc = time.time()
-    print("Processed ", models.shape[0], "models on", len(predictors)-1, "predictors in", (toc-tic), "seconds.")
+    if yesPrint:
+        display(models)
+        print("Processed ", models.shape[0], "models on", len(predictors)-1, "predictors in", (toc-tic), "seconds.")
     
     # Return the best model, along with some other useful information about the model
     return best_model
@@ -89,6 +87,7 @@ def mainForward(X, Y, weights, yesPrint = False):
 
     toc = time.time()
     print("Total elapsed time:", (toc-tic), "seconds.")
+    
     return models_fwd
 
 def mainBackward(X, Y, weights, yesPrint = False):
@@ -104,6 +103,7 @@ def mainBackward(X, Y, weights, yesPrint = False):
 
     toc = time.time()
     print("Total elapsed time:", (toc-tic), "seconds.")
+    
     return models_bwd
 
 def compute_criteria(group_of_models):
@@ -119,42 +119,44 @@ def compute_criteria(group_of_models):
 
 #GRAFICIC
 
-def plot_response_over_prediction(response, prediction):
+def plot_response_over_prediction(response, prediction, title = "Graph"):
     df = pd.DataFrame({'response':response, 'prediction':prediction,"diff": abs(response-prediction)})
-    ax1 = df.reset_index().plot(kind='scatter', x='index', y='response', color='r',figsize=(15,10))    
+    ax1 = df.reset_index().plot(kind='scatter', x='index', y='response', color='r',figsize=(15,10), title = title)    
     ax2 = df.reset_index().plot(x='index', y='prediction', color='b', ax=ax1,figsize=(15,10)) 
     ax3 = df.reset_index().plot(x='index', y='diff', color='g', ax=ax1,figsize=(15,10))
     return;
     
-def selectBestForEachCriteria(models_fwd, criteriaToMin, criteriaToMax):
+def selectBestForEachCriteria(models_fwd, criteriaToMin, criteriaToMax, toPrint = False):
     dict_results_best_models = {}
     
-    for criteria in criteriaToMin:
-        print("The criteria is: " + criteria)
+    for criteria in criteriaToMin:        
         row = models_fwd.loc[models_fwd[criteria].argmin()]
         modelFeatures = row["model"].model.exog_names
         if "intercept" not in modelFeatures:
             modelFeatures.append("intercept")
         criteriaValue = row[criteria]
         degressOfFreedom = row["model"].model.df_model
-        print("Features: "+str(modelFeatures))
-        print("Criteria value: "+str(criteriaValue))
-        print("Degrees of freedom: "+str(degressOfFreedom+1))
-        print()
+        if toPrint:
+            print("The criteria is: " + criteria)
+            print("Features: "+str(modelFeatures))
+            print("Criteria value: "+str(criteriaValue))
+            print("Degrees of freedom: "+str(degressOfFreedom+1))
+            print()
         dict_results_best_models[criteria] = row
         
     for criteria in criteriaToMax:
-        print("The criteria is: " + criteria)
         row = models_fwd.loc[models_fwd[criteria].argmax()]
         modelFeatures = row["model"].model.exog_names
         if "intercept" not in modelFeatures:
             modelFeatures.append("intercept")
         criteriaValue = row[criteria]
         degressOfFreedom = row["model"].model.df_model
-        print("Features: "+str(modelFeatures))
-        print("Criteria value: "+str(criteriaValue))
-        print("Degrees of freedom: "+str(degressOfFreedom+1))
-        print()
+        if toPrint:
+            print("The criteria is: " + criteria)
+            print("Features: "+str(modelFeatures))
+            print("Criteria value: "+str(criteriaValue))
+            print("Degrees of freedom: "+str(degressOfFreedom+1))
+            print()
         dict_results_best_models[criteria] = row
         
     best_models = pd.DataFrame(dict_results_best_models).T
