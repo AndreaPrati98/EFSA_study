@@ -119,11 +119,11 @@ def compute_criteria(group_of_models):
 
 #GRAFICIC
 
-def plot_response_over_prediction(response, prediction, title = "Graph"):
+def plot_response_over_prediction(response, prediction, title = "Graph", figsize = (12, 8)):
     df = pd.DataFrame({'response':response, 'prediction':prediction,"diff": abs(response-prediction)})
-    ax1 = df.reset_index().plot(kind='scatter', x='index', y='response', color='r',figsize=(15,10), title = title)    
-    ax2 = df.reset_index().plot(x='index', y='prediction', color='b', ax=ax1,figsize=(15,10)) 
-    ax3 = df.reset_index().plot(x='index', y='diff', color='g', ax=ax1,figsize=(15,10))
+    ax1 = df.reset_index().plot(kind='scatter', x='index', y='response', color='r',figsize=figsize, title = title)    
+    ax2 = df.reset_index().plot(x='index', y='prediction', color='b', ax=ax1,figsize=figsize) 
+    ax3 = df.reset_index().plot(x='index', y='diff', color='g', ax=ax1,figsize=figsize)
     return;
     
 def selectBestForEachCriteria(models_fwd, criteriaToMin, criteriaToMax, toPrint = False):
