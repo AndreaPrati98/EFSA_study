@@ -138,13 +138,18 @@ def plot_response_over_prediction(response, prediction, title="Graph", figsize=(
         # yprd_ci_upper = dt['obs_ci_upper']
         ym_ci_lower = dt['mean_ci_lower']
         ym_ci_upper = dt['mean_ci_upper']
-        _ = plt.plot(np.linspace(start=1, stop=len(ym_ci_lower), num=len(ym_ci_lower)), ym_ci_lower, color="darkgreen",
-                     linestyle="--",
-                     label="Confidence Interval", ax=ax1)
-        _ = plt.plot(np.linspace(start=1, stop=len(ym_ci_lower), num=len(ym_ci_lower)), ym_ci_upper, color="darkgreen",
-                     linestyle="--", ax=ax1)
-        _ = plt.legend()
-        plt.show()
+        
+        df["ym_ci_lower"] = ym_ci_lower        
+        df["ym_ci_upper"] = ym_ci_upper
+        #_ = plt.plot(np.linspace(start=1, stop=len(ym_ci_lower), num=len(ym_ci_lower)), ym_ci_lower, color="darkgreen",
+        #             linestyle="--",
+        #             label="Confidence Interval", ax=ax1)
+        #_ = plt.plot(np.linspace(start=1, stop=len(ym_ci_lower), num=len(ym_ci_lower)), ym_ci_upper, color="darkgreen",
+        #             linestyle="--", ax=ax1)
+        #_ = plt.legend()
+        #plt.show()
+        ax4 = df.reset_index().plot(x='index', y='ym_ci_lower', color='m',ax=ax1,linestyle="--", figsize=figsize)
+        ax5 = df.reset_index().plot(x='index', y='ym_ci_upper', color='m', ax=ax1,linestyle="--", figsize=figsize)        
     return;
 
 
