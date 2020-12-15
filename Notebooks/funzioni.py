@@ -160,8 +160,8 @@ def selectBestForEachCriteria(models_fwd, criteriaToMin, criteriaToMax, toPrint=
     for criteria in criteriaToMin:
         row = models_fwd.loc[models_fwd[criteria].argmin()]
         modelFeatures = row["model"].model.exog_names
-        if "intercept" not in modelFeatures:
-            modelFeatures.append("intercept")
+        #if "intercept" not in modelFeatures:
+        #    modelFeatures.append("intercept")
         criteriaValue = row[criteria]
         degressOfFreedom = row["model"].model.df_model
         if toPrint:
@@ -175,8 +175,8 @@ def selectBestForEachCriteria(models_fwd, criteriaToMin, criteriaToMax, toPrint=
     for criteria in criteriaToMax:
         row = models_fwd.loc[models_fwd[criteria].argmax()]
         modelFeatures = row["model"].model.exog_names
-        if "intercept" not in modelFeatures:
-            modelFeatures.append("intercept")
+        #if "intercept" not in modelFeatures:
+        #    modelFeatures.append("intercept")
         criteriaValue = row[criteria]
         degressOfFreedom = row["model"].model.df_model
         if toPrint:
