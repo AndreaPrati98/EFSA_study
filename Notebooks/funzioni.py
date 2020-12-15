@@ -128,7 +128,7 @@ def plot_response_over_prediction(response, prediction, title="Graph", figsize=(
     df = pd.DataFrame({'response': response, 'prediction': prediction, "diff": abs(response - prediction)})
     ax1 = df.reset_index().plot(kind='scatter', x='index', y='response', color='r', figsize=figsize, title=title)
     ax2 = df.reset_index().plot(x='index', y='prediction', color='b', ax=ax1, figsize=figsize)
-    ax3 = df.reset_index().plot(x='index', y='diff', color='g', ax=ax1, figsize=figsize)
+    #ax3 = df.reset_index().plot(x='index', y='diff', color='g', ax=ax1, figsize=figsize)
     if wrapper is not None:
         model = wrapper.model
         X = model.exog
@@ -148,8 +148,8 @@ def plot_response_over_prediction(response, prediction, title="Graph", figsize=(
         #             linestyle="--", ax=ax1)
         #_ = plt.legend()
         #plt.show()
-        ax4 = df.reset_index().plot(x='index', y='ym_ci_lower', color='m',ax=ax1,linestyle="--", figsize=figsize)
-        ax5 = df.reset_index().plot(x='index', y='ym_ci_upper', color='m', ax=ax1,linestyle="--", figsize=figsize)        
+        ax4 = df.reset_index().plot(x='index', y='ym_ci_lower', color='g',ax=ax1,linestyle="--", figsize=figsize)
+        ax5 = df.reset_index().plot(x='index', y='ym_ci_upper', color='g', ax=ax1,linestyle="--", figsize=figsize)        
     return;
 
 
