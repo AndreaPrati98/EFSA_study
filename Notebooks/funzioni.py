@@ -124,10 +124,11 @@ def compute_criteria(group_of_models):
 
 # GRAFICIC
 
-def plot_response_over_prediction(response, prediction, title="Graph", figsize=(12, 8), wrapper=None):
+def plot_response_over_prediction(response, prediction, title="Graph", figsize=(12, 8), wrapper=None, printBlue=True):
     df = pd.DataFrame({'response': response, 'prediction': prediction, "diff": abs(response - prediction)})
     ax1 = df.reset_index().plot(kind='scatter', x='index', y='response', color='r', figsize=figsize, title=title)
-    ax2 = df.reset_index().plot(x='index', y='prediction', color='b', ax=ax1, figsize=figsize)
+    if printBlue:
+        ax2 = df.reset_index().plot(x='index', y='prediction', color='b', ax=ax1, figsize=figsize)
     #ax3 = df.reset_index().plot(x='index', y='diff', color='g', ax=ax1, figsize=figsize)
     if wrapper is not None:
         model = wrapper.model
